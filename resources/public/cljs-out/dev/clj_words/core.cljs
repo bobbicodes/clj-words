@@ -17,7 +17,7 @@
 (defn rand-fn []
   (first (shuffle (keys data/fn-map))))
 
-(def word (atom (rand-fn)))
+(defonce word (atom (rand-fn)))
 
 (defn text []
   (str @word
@@ -29,7 +29,7 @@
              (positions)
              (text))))
 
-(def app-state (atom (init-matrix)))
+(defonce app-state (atom (init-matrix)))
 
 (defn rect-cell [app-state pos condition]
   [:rect
@@ -45,7 +45,7 @@
   [:text
    {:y 0.5
     :text-anchor "middle"
-    :fill "purple"
+    :fill "black"
     :font-size 1.25}
    detected-text])
 
@@ -71,9 +71,7 @@
        (reset! app-state (init-matrix)))}
     "Reset"]
    [:div [render-board @app-state]]
-   [:div @word]
-   [:div (text)]
-   [:div (str @app-state)]])
+   [:div (get data/fn-map @word)]])
 
 (defn scramble?
   "Returns true if letters of string b are contained in string a."
