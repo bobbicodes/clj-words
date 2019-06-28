@@ -16,7 +16,7 @@ cljs.test.do_report.call(null,new cljs.core.PersistentArrayMap(null, 4, [new clj
 }
 
 return result__8221__auto__;
-}catch (e14148){var t__8265__auto__ = e14148;
+}catch (e14801){var t__8265__auto__ = e14801;
 return cljs.test.do_report.call(null,new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"type","type",1174270348),new cljs.core.Keyword(null,"error","error",-978969032),new cljs.core.Keyword(null,"expected","expected",1583670997),cljs.core.list(new cljs.core.Symbol(null,"=","=",-1501502141,null),cljs.core.list(new cljs.core.Symbol(null,"*","*",345799209,null),(1),(2)),cljs.core.list(new cljs.core.Symbol(null,"multiply","multiply",603624479,null),(1),(2))),new cljs.core.Keyword(null,"actual","actual",107306363),t__8265__auto__,new cljs.core.Keyword(null,"message","message",-406056002),null], null));
 }});
 
@@ -34,7 +34,7 @@ cljs.test.do_report.call(null,new cljs.core.PersistentArrayMap(null, 4, [new clj
 }
 
 return result__8221__auto__;
-}catch (e14149){var t__8265__auto__ = e14149;
+}catch (e14802){var t__8265__auto__ = e14802;
 return cljs.test.do_report.call(null,new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"type","type",1174270348),new cljs.core.Keyword(null,"error","error",-978969032),new cljs.core.Keyword(null,"expected","expected",1583670997),cljs.core.list(new cljs.core.Symbol(null,"=","=",-1501502141,null),cljs.core.list(new cljs.core.Symbol(null,"*","*",345799209,null),(75),(10)),cljs.core.list(new cljs.core.Symbol(null,"multiply","multiply",603624479,null),(10),(75))),new cljs.core.Keyword(null,"actual","actual",107306363),t__8265__auto__,new cljs.core.Keyword(null,"message","message",-406056002),null], null));
 }});
 

@@ -14,25 +14,28 @@
 (defn rand-fn []
   (first (shuffle (keys data/fn-map))))
 
-(def word (rand-fn))
-
-(def word-across
-  (zipmap (for [i (range (count word))] [i 0])
-    (for [i (range (count word))] (nth word i))))
-
-(def second-word
+(defn second-word [s]
   (loop [words (shuffle (keys data/fn-map))
-       first-letter (first word)]
-  (if (= (first (first words)) first-letter)
-     (first words)
-     (recur (rest words) first-letter))))
+         first-letter (first s)]
+    (if (= (first (first words)) first-letter)
+       (first words)
+       (recur (rest words) first-letter))))
 
-(def word-down
-  (zipmap (for [i (range (count second-word))] [0 i])
-          (for [i (range (count second-word))] (nth second-word i))))
+(def words
+  (let [word1 (rand-fn)]
+    (atom {:word-1-across word1
+           :word-1-down (second-word word1)})))
 
-(def two-words
-  (into word-across word-down))
+(defn word-across [s]
+  (zipmap (for [i (range (count s))] [i 0])
+          (for [i (range (count s))] (nth s i))))
+
+(defn word-down [s]
+    (zipmap (for [i (range (count s))] [0 i])
+            (for [i (range (count s))] (nth s i))))
+
+(defn two-words []
+  (into (word-across (:word-1-across @words)) (word-down (:word-1-down @words))))
 
 (def answer-toggle (atom :off))
 
@@ -42,7 +45,7 @@
     :x -1 :y -1
     :stroke-width 0.05
     :stroke "black"
-    :fill (if (get two-words [i j])
+    :fill (if (get (two-words) [i j])
     "white" "pink")}])
 
 (defn text-cell [detected-text]
@@ -65,20 +68,28 @@
                           "translate(1,1)")}
       [rect-cell [i j]]
       (if (= :on @answer-toggle)
-        [text-cell (get two-words [i j])])])))
+        [text-cell (get (two-words) [i j])])])))
 
 (defn word-search []
   [:center
     [:h1 "Clj-words"]
    [:div [render-board]]
    [:div [:p "Across:" ]
-         [:p (get data/fn-map word)]
+         [:p (get data/fn-map (:word-1-across @words))]
          [:p "Down:"]
-          [:p (get data/fn-map second-word)]]
+          [:p (get data/fn-map (:word-1-down @words))]]
           [:button
-    {:on-click
-     #(reset! answer-toggle :on)}
-    "Answer"]])
+            {:on-click
+              #(reset! answer-toggle :on)}
+            "Answer"]
+            [:button
+              {:on-click
+                #(do (reset! words
+                       (let [word1 (rand-fn)]
+                         {:word-1-across word1
+                          :word-1-down (second-word word1)}))
+                     (reset! answer-toggle :off))}
+              "New"]])
 
 (defn scramble?
   "Returns true if letters of string b are contained in string a."
