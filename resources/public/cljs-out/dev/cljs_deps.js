@@ -51,7 +51,7 @@ goog.addDependency("../reagent/impl/template.js", ['reagent.impl.template'], ['r
 goog.addDependency("../cljsjs/react-dom/development/react-dom.inc.js", ['react_dom', 'cljsjs.react.dom'], ['react'], {'foreign-lib': true});
 goog.addDependency("../reagent/dom.js", ['reagent.dom'], ['reagent.impl.util', 'reagent.interop', 'reagent.ratom', 'cljs.core', 'reagent.impl.template', 'reagent.impl.batching', 'reagent.debug', 'react_dom']);
 goog.addDependency("../reagent/core.js", ['reagent.core'], ['reagent.impl.util', 'reagent.interop', 'reagent.ratom', 'react', 'cljs.core', 'reagent.impl.template', 'reagent.impl.batching', 'reagent.impl.component', 'reagent.debug', 'reagent.dom']);
-goog.addDependency("../clj_words/core.js", ['clj_words.core'], ['goog.dom', 'clj_words.data', 'reagent.core', 'cljs.core', 'clojure.set']);
+goog.addDependency("../clj_words/core.js", ['clj_words.core'], ['goog.dom', 'clj_words.data', 'reagent.core', 'cljs.core', 'clojure.set', 'clojure.string']);
 goog.addDependency("../clj_words/core_test.js", ['clj_words.core_test'], ['cljs.core', 'cljs.test', 'clj_words.core']);
 goog.addDependency("../clj_words/test_runner.js", ['clj_words.test_runner'], ['cljs.core', 'figwheel.main.testing', 'clj_words.core_test']);
 goog.addDependency("../cljs_test_display/favicon.js", ['cljs_test_display.favicon'], ['goog.dom', 'cljs.core', 'goog.object', 'clojure.string']);

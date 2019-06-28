@@ -3,6 +3,7 @@
    [goog.dom :as gdom]
    [reagent.core :as reagent :refer [atom]]
    [clojure.set :as set]
+   [clojure.string :as str]
    [clj-words.data :as data]))
 
 (defn multiply [a b] (* a b))
@@ -13,17 +14,25 @@
 (defn rand-fn []
   (first (shuffle (keys data/fn-map))))
 
-(defonce word (atom (rand-fn)))
+(def word (rand-fn))
 
-(defonce orientation (atom "across"))
+(def word-across
+  (zipmap (for [i (range (count word))] [i 0])
+    (for [i (range (count word))] (nth word i))))
 
-(defn word-down []
-  (zipmap (for [i (range (count @word))] [0 i])
-          (for [i (range (count @word))] (nth @word i))))
+(def second-word
+  (loop [words (shuffle (keys data/fn-map))
+       first-letter (first word)]
+  (if (= (first (first words)) first-letter)
+     (first words)
+     (recur (rest words) first-letter))))
 
-(defn word-across []
-  (zipmap (for [i (range (count @word))] [i 0])
-    (for [i (range (count @word))] (nth @word i))))
+(def word-down
+  (zipmap (for [i (range (count second-word))] [0 i])
+          (for [i (range (count second-word))] (nth second-word i))))
+
+(def two-words
+  (into word-across word-down))
 
 (defn rect-cell []
   [:rect
@@ -52,26 +61,15 @@
                           "scale (0.5)"
                           "translate(1,1)")}
       [rect-cell]
-      [text-cell (if (= @orientation "across")
-                    (get (word-across) [i j])
-                    (get (word-down) [i j]))]])))
+      [text-cell (get two-words [i j])]])))
 
 (defn word-search []
   [:center
-   [:button
-    {:on-click
-     (fn new-word-click [e]
-       (reset! word (rand-fn)))}
-    "New word"]
-    [:button
-     {:on-click
-      (fn orientation-toggle [e]
-        (reset! orientation (if (= @orientation "across")
-                               "down" "across")))}
-          (if (= @orientation "across")
-                "Down" "Across")]
    [:div [render-board]]
-   [:div (get data/fn-map @word)]])
+   [:div [:p "Across:" ]
+         [:p (get data/fn-map word)]
+         [:p "Down:"]
+          [:p (get data/fn-map second-word)]]])
 
 (defn scramble?
   "Returns true if letters of string b are contained in string a."
