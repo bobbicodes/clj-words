@@ -34,13 +34,16 @@
 (def two-words
   (into word-across word-down))
 
-(defn rect-cell []
+(def answer-toggle (atom :off))
+
+(defn rect-cell [[i j]]
   [:rect
    {:width 2 :height 2
     :x -1 :y -1
     :stroke-width 0.05
     :stroke "black"
-    :fill "pink"}])
+    :fill (if (get two-words [i j])
+    "white" "pink")}])
 
 (defn text-cell [detected-text]
   [:text
@@ -60,16 +63,22 @@
      [:g {:transform (str "translate(" i  "," j ") "
                           "scale (0.5)"
                           "translate(1,1)")}
-      [rect-cell]
-      [text-cell (get two-words [i j])]])))
+      [rect-cell [i j]]
+      (if (= :on @answer-toggle)
+        [text-cell (get two-words [i j])])])))
 
 (defn word-search []
   [:center
+    [:h1 "Clj-words"]
    [:div [render-board]]
    [:div [:p "Across:" ]
          [:p (get data/fn-map word)]
          [:p "Down:"]
-          [:p (get data/fn-map second-word)]]])
+          [:p (get data/fn-map second-word)]]
+          [:button
+    {:on-click
+     #(reset! answer-toggle :on)}
+    "Answer"]])
 
 (defn scramble?
   "Returns true if letters of string b are contained in string a."
