@@ -7,8 +7,8 @@
 
 (defn multiply [a b] (* a b))
 
-(def board-width 12)
-(def board-height 12)
+(def board-width 14)
+(def board-height 14)
 
 (defn positions []
    (for [i (range board-width) j (range board-height)]
@@ -19,24 +19,20 @@
 
 (defonce word (atom (rand-fn)))
 
-(defn text []
-  (str @word
-    (apply str (repeat (- (* board-width board-height) (count @word)) " "))))
+(defonce orientation (atom "across"))
 
-(defn init-matrix []
-  (into {}
-        (map vector
-             (positions)
-             (text))))
+(defn word-down []
+  (zipmap (for [i (range (count @word))] [0 i])
+          (for [i (range (count @word))] (nth @word i))))
 
-(defonce app-state (atom (init-matrix)))
+(defn word-across []
+  (zipmap (for [i (range (count @word))] [i 0])
+    (for [i (range (count @word))] (nth @word i))))
 
-(defn rect-cell [app-state pos condition]
+(defn rect-cell []
   [:rect
-   {:width 2
-    :height 2
-    :x -1
-    :y -1
+   {:width 2 :height 2
+    :x -1 :y -1
     :stroke-width 0.05
     :stroke "black"
     :fill "pink"}])
@@ -49,28 +45,36 @@
     :font-size 1.25}
    detected-text])
 
-(defn render-board [app-state]
+(defn render-board []
   (into
    [:svg.board
     {:view-box (str "0 0 " board-width " " board-height)
      :shape-rendering "auto"
      :style {:max-height "500px"}}]
-   (for [[[i j] condition] app-state]
+   (for [i (range board-width) j (range board-height)]
      [:g {:transform (str "translate(" i  "," j ") "
                           "scale (0.5)"
                           "translate(1,1)")}
-      [rect-cell app-state [i j] condition]
-      [text-cell (str (get app-state [i j]))]])))
+      [rect-cell]
+      [text-cell (if (= @orientation "across")
+                    (get (word-across) [i j])
+                    (get (word-down) [i j]))]])))
 
 (defn word-search []
   [:center
    [:button
     {:on-click
-     (fn new-game-click [e]
-       (reset! word (rand-fn))
-       (reset! app-state (init-matrix)))}
-    "Reset"]
-   [:div [render-board @app-state]]
+     (fn new-word-click [e]
+       (reset! word (rand-fn)))}
+    "New word"]
+    [:button
+     {:on-click
+      (fn orientation-toggle [e]
+        (reset! orientation (if (= @orientation "across")
+                               "down" "across")))}
+          (if (= @orientation "across")
+                "Down" "Across")]
+   [:div [render-board]]
    [:div (get data/fn-map @word)]])
 
 (defn scramble?
