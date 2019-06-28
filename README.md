@@ -1,6 +1,6 @@
 # clj-words
 
-This is gonna be a crossword puzzle and word-search generator. So far it just gives you two random functions and definitions.
+This is gonna be a crossword puzzle and word-search generator. So far it just gives you two random functions to fill in based on their definitions.
 
 ## Development
 
