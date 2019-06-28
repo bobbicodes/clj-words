@@ -10,10 +10,6 @@
 (def board-width 14)
 (def board-height 14)
 
-(defn positions []
-   (for [i (range board-width) j (range board-height)]
-     [j i]))
-
 (defn rand-fn []
   (first (shuffle (keys data/fn-map))))
 
